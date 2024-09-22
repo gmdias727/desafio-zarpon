@@ -1,6 +1,13 @@
 <template>
   <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Lista de Usuários</h1>
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-2xl font-bold">Lista de Usuários</h1>
+      <div class="flex items-center space-x-4">
+        <img src="/profile.webp" alt="User Avatar" class="w-10 h-10 rounded-full" />
+        <span class="text-gray-700">Gabriel</span>
+      </div>
+    </div>
+
     <button @click="openForm()" class="bg-blue-500 text-white px-4 py-2 rounded mb-4">
       Adicionar Usuário
     </button>
@@ -27,10 +34,102 @@
       <table class="min-w-full bg-white">
         <thead>
           <tr>
-            <th class="py-2 px-4 cursor-pointer" @click="sortBy('id')">ID</th>
-            <th class="py-2 px-4 cursor-pointer" @click="sortBy('name')">Nome</th>
-            <th class="py-2 px-4 cursor-pointer" @click="sortBy('email')">Email</th>
-            <th class="py-2 px-4 cursor-pointer" @click="sortBy('status')">Status</th>
+            <th
+              class="py-2 px-4 cursor-pointer transition-colors duration-300 hover:bg-gray-200"
+              @click="sortBy('id')"
+            >
+              ID
+              <Icon
+                v-if="sortKey === 'id'"
+                :icon="sortOrder === 1 ? 'mdi:arrow-up' : 'mdi:arrow-down'"
+                width="16"
+                height="16"
+              />
+            </th>
+            <th
+              class="py-2 px-4 cursor-pointer transition-colors duration-300 hover:bg-gray-200"
+              @click="sortBy('name')"
+            >
+              Nome
+              <Icon
+                v-if="sortKey === 'name'"
+                :icon="sortOrder === 1 ? 'mdi:arrow-up' : 'mdi:arrow-down'"
+                width="16"
+                height="16"
+              />
+            </th>
+            <th
+              class="py-2 px-4 cursor-pointer transition-colors duration-300 hover:bg-gray-200"
+              @click="sortBy('email')"
+            >
+              Email
+              <Icon
+                v-if="sortKey === 'email'"
+                :icon="sortOrder === 1 ? 'mdi:arrow-up' : 'mdi:arrow-down'"
+                width="16"
+                height="16"
+              />
+            </th>
+            <th
+              class="py-2 px-4 cursor-pointer transition-colors duration-300 hover:bg-gray-200"
+              @click="sortBy('phone')"
+            >
+              Telefone
+              <Icon
+                v-if="sortKey === 'phone'"
+                :icon="sortOrder === 1 ? 'mdi:arrow-up' : 'mdi:arrow-down'"
+                width="16"
+                height="16"
+              />
+            </th>
+            <th
+              class="py-2 px-4 cursor-pointer transition-colors duration-300 hover:bg-gray-200"
+              @click="sortBy('cpfCnpj')"
+            >
+              CPF/CNPJ
+              <Icon
+                v-if="sortKey === 'cpfCnpj'"
+                :icon="sortOrder === 1 ? 'mdi:arrow-up' : 'mdi:arrow-down'"
+                width="16"
+                height="16"
+              />
+            </th>
+            <th
+              class="py-2 px-4 cursor-pointer transition-colors duration-300 hover:bg-gray-200"
+              @click="sortBy('monthlyIncome')"
+            >
+              Ganho Mensal (R$)
+              <Icon
+                v-if="sortKey === 'monthlyIncome'"
+                :icon="sortOrder === 1 ? 'mdi:arrow-up' : 'mdi:arrow-down'"
+                width="16"
+                height="16"
+              />
+            </th>
+            <th
+              class="py-2 px-4 cursor-pointer transition-colors duration-300 hover:bg-gray-200"
+              @click="sortBy('status')"
+            >
+              Status
+              <Icon
+                v-if="sortKey === 'status'"
+                :icon="sortOrder === 1 ? 'mdi:arrow-up' : 'mdi:arrow-down'"
+                width="16"
+                height="16"
+              />
+            </th>
+            <th
+              class="py-2 px-4 cursor-pointer transition-colors duration-300 hover:bg-gray-200"
+              @click="sortBy('address')"
+            >
+              Endereço
+              <Icon
+                v-if="sortKey === 'address'"
+                :icon="sortOrder === 1 ? 'mdi:arrow-up' : 'mdi:arrow-down'"
+                width="16"
+                height="16"
+              />
+            </th>
             <th class="py-2 px-4">Ações</th>
           </tr>
         </thead>
@@ -39,7 +138,11 @@
             <td class="border px-4 py-2">{{ user.id }}</td>
             <td class="border px-4 py-2">{{ user.name }}</td>
             <td class="border px-4 py-2">{{ user.email }}</td>
+            <td class="border px-4 py-2">{{ user.phone }}</td>
+            <td class="border px-4 py-2">{{ user.cpfCnpj }}</td>
+            <td class="border px-4 py-2">{{ user.monthlyIncome }}</td>
             <td class="border px-4 py-2">{{ user.status }}</td>
+            <td class="border px-4 py-2">{{ user.address }}</td>
             <td class="border px-4 py-2 flex space-x-2">
               <button @click="openForm(user)" class="text-blue-500 hover:text-blue-700">
                 <Icon icon="mdi:pencil" width="24" height="24" />

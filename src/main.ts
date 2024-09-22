@@ -3,6 +3,8 @@ import './index.css';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 
+import 'vue3-toastify/dist/index.css';
+
 import App from './App.vue';
 import router from './router';
 
