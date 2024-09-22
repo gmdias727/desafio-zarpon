@@ -166,6 +166,7 @@ import { useUserStore, type User } from '@/stores/UserStore';
 import { Icon } from '@iconify/vue';
 import UserForm from '@/components/User/UserForm.vue';
 import ConfirmModal from '@/components/Modal/ConfirmModal.vue';
+import { toast } from 'vue3-toastify';
 
 const userStore = useUserStore();
 const users = ref(userStore.users);
@@ -202,6 +203,7 @@ async function deleteUser() {
     await userStore.deleteUser(userIdToDelete.value);
     users.value = userStore.users;
     closeConfirmModal();
+    toast('Usuário deletado com sucesso!', { type: 'success' });
   }
 }
 
