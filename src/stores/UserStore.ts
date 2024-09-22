@@ -9,6 +9,7 @@ export interface User {
   monthlyIncome: number;
   status: 'active' | 'inactive';
   address: string;
+  cep: string;
 }
 
 const mockUsers: User[] = [
@@ -21,6 +22,7 @@ const mockUsers: User[] = [
     monthlyIncome: 3000,
     status: 'active',
     address: 'Rua A, 123, São Paulo, SP',
+    cep: '13380-200',
   },
   {
     id: 2,
@@ -31,6 +33,7 @@ const mockUsers: User[] = [
     monthlyIncome: 4500,
     status: 'inactive',
     address: 'Rua B, 456, Rio de Janeiro, RJ',
+    cep: '20000-000',
   },
   {
     id: 3,
@@ -41,6 +44,7 @@ const mockUsers: User[] = [
     monthlyIncome: 5000,
     status: 'active',
     address: 'Rua C, 789, Belo Horizonte, MG',
+    cep: '30000-000',
   },
   {
     id: 4,
@@ -51,6 +55,7 @@ const mockUsers: User[] = [
     monthlyIncome: 3500,
     status: 'inactive',
     address: 'Rua D, 101, Curitiba, PR',
+    cep: '40000-000',
   },
   {
     id: 5,
@@ -61,6 +66,7 @@ const mockUsers: User[] = [
     monthlyIncome: 4000,
     status: 'active',
     address: 'Rua E, 202, Porto Alegre, RS',
+    cep: '50000-000',
   },
 ];
 
