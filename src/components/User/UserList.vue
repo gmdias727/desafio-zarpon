@@ -20,12 +20,12 @@
         </thead>
         <tbody>
           <tr v-for="user in users" :key="user.id">
-            <td class="border px-4 py-2">
-              <button @click="openForm(user)" class="bg-yellow-500 text-white px-2 py-1 rounded">
-                Editar
+            <td class="border px-4 py-2 flex space-x-2">
+              <button @click="openForm(user)" class="text-blue-500 hover:text-blue-700">
+                <Icon icon="mdi:pencil" width="24" height="24" />
               </button>
-              <button @click="deleteUser(user.id)" class="bg-red-500 text-white px-2 py-1 rounded">
-                Excluir
+              <button @click="deleteUser(user.id)" class="text-red-500 hover:text-red-700">
+                <Icon icon="mdi:trash-can" width="24" height="24" />
               </button>
             </td>
             <td class="border px-4 py-2">{{ user.name }}</td>
@@ -47,6 +47,7 @@
 import { ref } from 'vue';
 import { useUserStore } from '@/stores/UserStore';
 import UserForm from './UserForm.vue';
+import { Icon } from '@iconify/vue';
 
 const userStore = useUserStore();
 const users = userStore.users;
