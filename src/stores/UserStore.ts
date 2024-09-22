@@ -11,10 +11,63 @@ interface User {
   address: string;
 }
 
+const mockUsers: User[] = [
+  {
+    id: 1,
+    name: 'João Silva',
+    email: 'joao.silva@example.com',
+    phone: '123456789',
+    cpfCnpj: '123.456.789-00',
+    monthlyIncome: 3000,
+    status: 'active',
+    address: 'Rua A, 123, São Paulo, SP',
+  },
+  {
+    id: 2,
+    name: 'Maria Oliveira',
+    email: 'maria.oliveira@example.com',
+    phone: '987654321',
+    cpfCnpj: '987.654.321-00',
+    monthlyIncome: 4500,
+    status: 'inactive',
+    address: 'Rua B, 456, Rio de Janeiro, RJ',
+  },
+  {
+    id: 3,
+    name: 'Carlos Souza',
+    email: 'carlos.souza@example.com',
+    phone: '456123789',
+    cpfCnpj: '456.123.789-00',
+    monthlyIncome: 5000,
+    status: 'active',
+    address: 'Rua C, 789, Belo Horizonte, MG',
+  },
+  {
+    id: 4,
+    name: 'Ana Pereira',
+    email: 'ana.pereira@example.com',
+    phone: '321654987',
+    cpfCnpj: '321.654.987-00',
+    monthlyIncome: 3500,
+    status: 'inactive',
+    address: 'Rua D, 101, Curitiba, PR',
+  },
+  {
+    id: 5,
+    name: 'Pedro Lima',
+    email: 'pedro.lima@example.com',
+    phone: '789123456',
+    cpfCnpj: '789.123.456-00',
+    monthlyIncome: 4000,
+    status: 'active',
+    address: 'Rua E, 202, Porto Alegre, RS',
+  },
+];
+
 export const useUserStore = defineStore('user', {
   state: () => ({
-    users: JSON.parse(localStorage.getItem('users') || '[]') as User[],
-    nextId: JSON.parse(localStorage.getItem('nextId') || '1'),
+    users: JSON.parse(localStorage.getItem('users') || JSON.stringify(mockUsers)) as User[],
+    nextId: JSON.parse(localStorage.getItem('nextId') || '6'),
   }),
   actions: {
     addUser(user: Omit<User, 'id'>) {
