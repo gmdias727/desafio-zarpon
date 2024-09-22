@@ -1,24 +1,15 @@
 <template>
-  <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-    <div class="bg-white p-6 rounded shadow-lg w-full max-w-lg relative">
+  <div
+    class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center overflow-auto"
+  >
+    <div
+      class="bg-white p-6 mt-4 rounded shadow-lg w-full max-w-lg relative max-h-full overflow-y-auto"
+    >
       <button
         @click="$emit('close')"
         class="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
       >
-        <svg
-          class="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          ></path>
-        </svg>
+        <Icon icon="mdi:close" width="24" height="24" />
       </button>
       <h2 class="text-xl font-bold mb-4">
         {{ isEditMode ? 'Editar Usuário' : 'Adicionar Usuário' }}
@@ -26,7 +17,13 @@
       <form @submit.prevent="saveUser">
         <div class="mb-4">
           <label class="block text-gray-700">Nome</label>
-          <input v-model="user.name" type="text" class="w-full px-3 py-2 border rounded" required />
+          <input
+            v-model="user.name"
+            type="text"
+            class="w-full px-3 py-2 border rounded"
+            placeholder="Digite o nome"
+            required
+          />
         </div>
         <div class="mb-4">
           <label class="block text-gray-700">Email</label>
@@ -34,6 +31,7 @@
             v-model="user.email"
             type="email"
             class="w-full px-3 py-2 border rounded"
+            placeholder="Ex: email@email.com"
             required
           />
         </div>
@@ -43,6 +41,7 @@
             v-model="user.phone"
             type="text"
             class="w-full px-3 py-2 border rounded"
+            placeholder="Ex: (11) 99999-9999"
             required
           />
         </div>
@@ -52,15 +51,17 @@
             v-model="user.cpfCnpj"
             type="text"
             class="w-full px-3 py-2 border rounded"
+            placeholder="Ex: 123.456.789-00"
             required
           />
         </div>
         <div class="mb-4">
           <label class="block text-gray-700">Ganho Mensal</label>
           <input
-            v-model="user.monthlyIncome"
-            type="number"
+            v-model="formattedMonthlyIncome"
+            type="text"
             class="w-full px-3 py-2 border rounded"
+            placeholder="Digite o ganho mensal"
             required
           />
         </div>
@@ -77,6 +78,7 @@
             v-model="user.address"
             type="text"
             class="w-full px-3 py-2 border rounded"
+            placeholder="Digite o endereço"
             required
           />
         </div>
@@ -88,7 +90,17 @@
           >
             Cancelar
           </button>
-          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Salvar</button>
+          <button
+            type="submit"
+            class="bg-blue-500 text-white px-4 py-2 rounded"
+            :disabled="isLoading"
+          >
+            <span v-if="isLoading" class="flex items-center">
+              <Icon icon="mdi:loading" class="animate-spin mr-2" width="24" height="24" />
+              Salvando...
+            </span>
+            <span v-else>Salvar</span>
+          </button>
         </div>
       </form>
     </div>
@@ -96,8 +108,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, defineProps } from 'vue';
-import { useUserStore } from '@/stores/UserStore';
+import { ref, watch, computed, defineProps, defineEmits } from 'vue';
+import { useUserStore, type User } from '@/stores/UserStore';
+import { Icon } from '@iconify/vue'; // Importação do Icon
 
 const props = defineProps({
   userToEdit: {
@@ -108,8 +121,9 @@ const props = defineProps({
 
 const userStore = useUserStore();
 const isEditMode = ref(false);
-const user = ref({
-  id: null,
+const isLoading = ref(false); // Estado de carregamento
+const user = ref<User>({
+  id: 0,
   name: '',
   email: '',
   phone: '',
@@ -119,11 +133,13 @@ const user = ref({
   address: '',
 });
 
+const emit = defineEmits(['close']);
+
 watch(
   () => props.userToEdit,
   (newUser) => {
     if (newUser) {
-      user.value = { ...newUser };
+      user.value = { ...newUser } as User;
       isEditMode.value = true;
     } else {
       resetForm();
@@ -133,18 +149,36 @@ watch(
   { immediate: true },
 );
 
-function saveUser() {
-  if (isEditMode.value) {
-    userStore.updateUser(user.value);
-  } else {
-    userStore.addUser(user.value);
+const formattedMonthlyIncome = computed({
+  get() {
+    return user.value.monthlyIncome ? `R$ ${user.value.monthlyIncome}` : '';
+  },
+  set(value: string) {
+    const numericValue = parseFloat(value.replace(/[^\d.-]/g, ''));
+    user.value.monthlyIncome = isNaN(numericValue) ? 0 : numericValue;
+  },
+});
+
+async function saveUser() {
+  isLoading.value = true; // Inicia o carregamento
+  try {
+    // Simula um tempo de espera fictício
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    if (isEditMode.value) {
+      await userStore.updateUser(user.value);
+    } else {
+      await userStore.addUser(user.value);
+    }
+    emit('close');
+  } finally {
+    isLoading.value = false; // Finaliza o carregamento
   }
-  $emit('close');
 }
 
 function resetForm() {
   user.value = {
-    id: null,
+    id: 0,
     name: '',
     email: '',
     phone: '',

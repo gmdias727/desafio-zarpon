@@ -16,8 +16,8 @@
 
 - Desenvolver interface para CRUD de usuários.
 - O cadastro/edição do usuário deve ser feito por um modal aberto pela listagem.
-  - Deve conter campos de nome, email, telefone, CPF/CNPJ, ganho mensal aproximado, status (ativo/inativo) e dados de endereço.
-  - Não precisa ter conexão com backend, mas os dados cadastrados devem ser salvos em uma **store** (ex: Pinia) para serem exibidos na listagem e deve ser possível a edição dos mesmos.
+  - Deve conter campos de nome, email, telefone, CPF/CNPJ, ganho mensal aproximado, status (ativo/inativo) e dados de endereço. [OK]
+  - Não precisa ter conexão com backend, mas os dados cadastrados devem ser salvos em uma **store** (ex: Pinia) para serem exibidos na listagem e deve ser possível a edição dos mesmos. [OK]
   - Ao cadastrar/editar o usuário simular tempo de loading e fazer tratativa de mensagens em sucesso/exceção.
 - A interface deve conter uma listagem com filtros personalizados e ordenação por coluna.
 - A exibição de colunas e layout da interface fica a critério do desenvolvedor.

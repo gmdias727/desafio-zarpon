@@ -24,7 +24,7 @@
               <button @click="openForm(user)" class="text-blue-500 hover:text-blue-700">
                 <Icon icon="mdi:pencil" width="24" height="24" />
               </button>
-              <button @click="deleteUser(user.id)" class="text-red-500 hover:text-red-700">
+              <button @click="confirmDelete(user.id)" class="text-red-500 hover:text-red-700">
                 <Icon icon="mdi:trash-can" width="24" height="24" />
               </button>
             </td>
@@ -39,22 +39,29 @@
         </tbody>
       </table>
     </div>
-    <UserForm v-if="showForm" :userToEdit="userToEdit" @close="closeForm" />
+    <UserForm v-if="showForm" :userToEdit="userToEdit ?? undefined" @close="closeForm" />
+    <ConfirmModal v-if="showConfirmModal" @confirm="deleteUser" @cancel="closeConfirmModal" />
   </div>
 </template>
 
 <script setup lang="ts">
+// Imports
 import { ref } from 'vue';
-import { useUserStore } from '@/stores/UserStore';
-import UserForm from './UserForm.vue';
+import { useUserStore, type User } from '@/stores/UserStore';
 import { Icon } from '@iconify/vue';
+
+// Components
+import UserForm from '@/components/User/UserForm.vue';
+import ConfirmModal from '@/components/Modal/ConfirmModal.vue';
 
 const userStore = useUserStore();
 const users = userStore.users;
 const showForm = ref(false);
-const userToEdit = ref(null);
+const showConfirmModal = ref(false);
+const userToEdit = ref<User | null>(null);
+const userIdToDelete = ref<number | null>(null);
 
-function openForm(user = null) {
+function openForm(user: User | null = null) {
   userToEdit.value = user;
   showForm.value = true;
 }
@@ -64,7 +71,20 @@ function closeForm() {
   userToEdit.value = null;
 }
 
-function deleteUser(userId) {
-  userStore.deleteUser(userId);
+function confirmDelete(userId: number) {
+  userIdToDelete.value = userId;
+  showConfirmModal.value = true;
+}
+
+function closeConfirmModal() {
+  showConfirmModal.value = false;
+  userIdToDelete.value = null;
+}
+
+function deleteUser() {
+  if (userIdToDelete.value !== null) {
+    userStore.deleteUser(userIdToDelete.value);
+    closeConfirmModal();
+  }
 }
 </script>
