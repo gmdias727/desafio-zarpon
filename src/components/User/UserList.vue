@@ -4,22 +4,42 @@
     <button @click="openForm()" class="bg-blue-500 text-white px-4 py-2 rounded mb-4">
       Adicionar Usuário
     </button>
+    <div class="mb-4">
+      <input
+        v-model="filters.name"
+        type="text"
+        placeholder="Filtrar por nome"
+        class="border px-2 py-1 mr-2"
+      />
+      <input
+        v-model="filters.email"
+        type="text"
+        placeholder="Filtrar por email"
+        class="border px-2 py-1 mr-2"
+      />
+      <select v-model="filters.status" class="border px-2 py-1">
+        <option value="">Todos</option>
+        <option value="active">Ativo</option>
+        <option value="inactive">Inativo</option>
+      </select>
+    </div>
     <div class="overflow-x-auto">
       <table class="min-w-full bg-white">
         <thead>
           <tr>
+            <th class="py-2 px-4 cursor-pointer" @click="sortBy('id')">ID</th>
+            <th class="py-2 px-4 cursor-pointer" @click="sortBy('name')">Nome</th>
+            <th class="py-2 px-4 cursor-pointer" @click="sortBy('email')">Email</th>
+            <th class="py-2 px-4 cursor-pointer" @click="sortBy('status')">Status</th>
             <th class="py-2 px-4">Ações</th>
-            <th class="py-2 px-4">Nome</th>
-            <th class="py-2 px-4">Email</th>
-            <th class="py-2 px-4">Telefone</th>
-            <th class="py-2 px-4">CPF/CNPJ</th>
-            <th class="py-2 px-4">Ganho Mensal</th>
-            <th class="py-2 px-4">Status</th>
-            <th class="py-2 px-4">Endereço</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users" :key="user.id">
+          <tr v-for="user in filteredAndSortedUsers" :key="user.id">
+            <td class="border px-4 py-2">{{ user.id }}</td>
+            <td class="border px-4 py-2">{{ user.name }}</td>
+            <td class="border px-4 py-2">{{ user.email }}</td>
+            <td class="border px-4 py-2">{{ user.status }}</td>
             <td class="border px-4 py-2 flex space-x-2">
               <button @click="openForm(user)" class="text-blue-500 hover:text-blue-700">
                 <Icon icon="mdi:pencil" width="24" height="24" />
@@ -28,13 +48,6 @@
                 <Icon icon="mdi:trash-can" width="24" height="24" />
               </button>
             </td>
-            <td class="border px-4 py-2">{{ user.name }}</td>
-            <td class="border px-4 py-2">{{ user.email }}</td>
-            <td class="border px-4 py-2">{{ user.phone }}</td>
-            <td class="border px-4 py-2">{{ user.cpfCnpj }}</td>
-            <td class="border px-4 py-2">{{ user.monthlyIncome }}</td>
-            <td class="border px-4 py-2">{{ user.status }}</td>
-            <td class="border px-4 py-2">{{ user.address }}</td>
           </tr>
         </tbody>
       </table>
@@ -45,21 +58,21 @@
 </template>
 
 <script setup lang="ts">
-// Imports
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useUserStore, type User } from '@/stores/UserStore';
 import { Icon } from '@iconify/vue';
-
-// Components
 import UserForm from '@/components/User/UserForm.vue';
 import ConfirmModal from '@/components/Modal/ConfirmModal.vue';
 
 const userStore = useUserStore();
-const users = userStore.users;
+const users = ref(userStore.users);
 const showForm = ref(false);
 const showConfirmModal = ref(false);
 const userToEdit = ref<User | null>(null);
 const userIdToDelete = ref<number | null>(null);
+const filters = ref({ name: '', email: '', status: '' });
+const sortKey = ref<string | null>(null);
+const sortOrder = ref(1);
 
 function openForm(user: User | null = null) {
   userToEdit.value = user;
@@ -81,10 +94,52 @@ function closeConfirmModal() {
   userIdToDelete.value = null;
 }
 
-function deleteUser() {
+async function deleteUser() {
   if (userIdToDelete.value !== null) {
-    userStore.deleteUser(userIdToDelete.value);
+    await userStore.deleteUser(userIdToDelete.value);
+    users.value = userStore.users;
     closeConfirmModal();
   }
 }
+
+function sortBy(key: string) {
+  if (sortKey.value === key) {
+    sortOrder.value = -sortOrder.value;
+  } else {
+    sortKey.value = key;
+    sortOrder.value = 1;
+  }
+}
+
+const filteredAndSortedUsers = computed(() => {
+  let filteredUsers = users.value;
+
+  if (filters.value.name) {
+    filteredUsers = filteredUsers.filter((user) =>
+      user.name.toLowerCase().includes(filters.value.name.toLowerCase()),
+    );
+  }
+
+  if (filters.value.email) {
+    filteredUsers = filteredUsers.filter((user) =>
+      user.email.toLowerCase().includes(filters.value.email.toLowerCase()),
+    );
+  }
+
+  if (filters.value.status) {
+    filteredUsers = filteredUsers.filter((user) => user.status === filters.value.status);
+  }
+
+  if (sortKey.value) {
+    filteredUsers = filteredUsers.slice().sort((a, b) => {
+      const aValue = a[sortKey.value as keyof User];
+      const bValue = b[sortKey.value as keyof User];
+      if (aValue < bValue) return -sortOrder.value;
+      if (aValue > bValue) return sortOrder.value;
+      return 0;
+    });
+  }
+
+  return filteredUsers;
+});
 </script>

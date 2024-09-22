@@ -110,7 +110,7 @@
 <script setup lang="ts">
 import { ref, watch, computed, defineProps, defineEmits } from 'vue';
 import { useUserStore, type User } from '@/stores/UserStore';
-import { Icon } from '@iconify/vue'; // Importação do Icon
+import { Icon } from '@iconify/vue';
 
 const props = defineProps({
   userToEdit: {
@@ -121,7 +121,7 @@ const props = defineProps({
 
 const userStore = useUserStore();
 const isEditMode = ref(false);
-const isLoading = ref(false); // Estado de carregamento
+const isLoading = ref(false);
 const user = ref<User>({
   id: 0,
   name: '',
@@ -160,9 +160,8 @@ const formattedMonthlyIncome = computed({
 });
 
 async function saveUser() {
-  isLoading.value = true; // Inicia o carregamento
+  isLoading.value = true;
   try {
-    // Simula um tempo de espera fictício
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     if (isEditMode.value) {
@@ -172,7 +171,7 @@ async function saveUser() {
     }
     emit('close');
   } finally {
-    isLoading.value = false; // Finaliza o carregamento
+    isLoading.value = false;
   }
 }
 
