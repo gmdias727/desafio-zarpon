@@ -1,5 +1,12 @@
 <template>
-  <div class="container mx-auto p-4">
+  <div class="container mx-auto p-4 pt-16">
+    <div v-if="isLoading" class="flex items-center justify-center min-h-screen">
+      <div class="text-center">
+        <Icon icon="mdi:loading" class="animate-spin mx-auto" width="72" height="72" />
+        <p class="text-2xl font-bold mt-4">Carregando...</p>
+      </div>
+    </div>
+    <div v-else>
     <div class="flex items-center justify-between mb-4">
       <h1 class="text-3xl font-extrabold text-center text-blue-700 mb-4">Lista de Usuários</h1>
       <ProfileTab />
