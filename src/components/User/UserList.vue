@@ -138,7 +138,7 @@
             <td class="border px-4 py-2">{{ user.id }}</td>
             <td class="border px-4 py-2">{{ user.name }}</td>
             <td class="border px-4 py-2">{{ user.email }}</td>
-            <td class="border px-4 py-2">{{ user.phone }}</td>
+            <td class="border px-4 py-2">{{ formatPhone(user.phone) }}</td>
             <td class="border px-4 py-2">{{ user.cpfCnpj }}</td>
             <td class="border px-4 py-2">{{ user.monthlyIncome }}</td>
             <td class="border px-4 py-2">{{ user.status }}</td>
@@ -247,4 +247,13 @@ const filteredAndSortedUsers = computed(() => {
 
   return filteredUsers;
 });
+
+function formatPhone(phone: string): string {
+  const cleaned = ('' + phone).replace(/\D/g, '');
+  const match = cleaned.match(/^(\d{2})(\d{4,5})(\d{4})$/);
+  if (match) {
+    return `(${match[1]}) ${match[2]}-${match[3]}`;
+  }
+  return phone;
+}
 </script>
