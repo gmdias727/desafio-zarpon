@@ -13,11 +13,12 @@
       Adicionar
     </button>
     <div class="mb-4">
+        <div class="flex space-x-2 mb-4">
       <input
-        v-model="filters.name"
+            v-model="filters.query"
         type="text"
-        placeholder="Filtrar por nome"
-        class="border px-2 py-1 mr-2"
+            placeholder="Buscar por nome, email, telefone, etc..."
+            class="w-1/2 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <input
         v-model="filters.email"
@@ -234,15 +235,15 @@ function sortBy(key: string) {
 const filteredAndSortedUsers = computed(() => {
   let filteredUsers = users.value;
 
-  if (filters.value.name) {
-    filteredUsers = filteredUsers.filter((user) =>
-      user.name.toLowerCase().includes(filters.value.name.toLowerCase()),
-    );
-  }
-
-  if (filters.value.email) {
-    filteredUsers = filteredUsers.filter((user) =>
-      user.email.toLowerCase().includes(filters.value.email.toLowerCase()),
+  if (filters.value.query) {
+    const query = filters.value.query.toLowerCase();
+    filteredUsers = filteredUsers.filter(
+      (user) =>
+        user.name.toLowerCase().includes(query) ||
+        user.email.toLowerCase().includes(query) ||
+        user.phone.toLowerCase().includes(query) ||
+        user.cpfCnpj.toLowerCase().includes(query) ||
+        user.address.toLowerCase().includes(query),
     );
   }
 
@@ -270,5 +271,9 @@ function formatPhone(phone: string): string {
     return `(${match[1]}) ${match[2]}-${match[3]}`;
   }
   return phone;
+}
+
+function formatCurrency(value: number): string {
+  return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 </script>
