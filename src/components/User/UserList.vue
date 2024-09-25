@@ -161,6 +161,13 @@
           </tr>
         </tbody>
       </table>
+      <p
+        v-else
+        class="text-center text-red-500 mt-4 text-xl font-bold flex items-center justify-center"
+      >
+        <Icon icon="mdi:alert-circle" width="24" height="24" class="mr-2" />
+        Nenhum usuário encontrado.
+      </p>
     </div>
     <UserForm v-if="showForm" :userToEdit="userToEdit ?? undefined" @close="closeForm" />
     <ConfirmModal v-if="showConfirmModal" @confirm="deleteUser" @cancel="closeConfirmModal" />
