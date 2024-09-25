@@ -141,7 +141,14 @@
             <td class="border px-4 py-2">{{ formatPhone(user.phone) }}</td>
             <td class="border px-4 py-2">{{ user.cpfCnpj }}</td>
             <td class="border px-4 py-2">{{ user.monthlyIncome }}</td>
-            <td class="border px-4 py-2">{{ user.status }}</td>
+            <td class="border px-4 py-2">
+              <Icon
+                :icon="user.status === 'active' ? 'mdi:check-circle' : 'mdi:close-circle'"
+                :class="user.status === 'active' ? 'text-green-500' : 'text-red-500'"
+                width="24"
+                height="24"
+              />
+            </td>
             <td class="border px-4 py-2">{{ user.address }}</td>
             <td class="border px-4 py-2 flex space-x-2">
               <button @click="openForm(user)" class="text-blue-500 hover:text-blue-700">
