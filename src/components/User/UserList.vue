@@ -1,15 +1,16 @@
 <template>
   <div class="container mx-auto p-4">
     <div class="flex items-center justify-between mb-4">
-      <h1 class="text-2xl font-bold">Lista de Usuários</h1>
-      <div class="flex items-center space-x-4">
-        <img src="/profile.webp" alt="User Avatar" class="w-10 h-10 rounded-full" />
-        <span class="text-gray-700">Gabriel</span>
-      </div>
+      <h1 class="text-3xl font-extrabold text-center text-blue-700 mb-4">Lista de Usuários</h1>
+      <ProfileTab />
     </div>
 
-    <button @click="openForm()" class="bg-blue-500 text-white px-4 py-2 rounded mb-4">
-      Adicionar Usuário
+    <button
+      @click="openForm()"
+      class="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-95 mb-4 flex items-center"
+    >
+      <Icon icon="mdi:plus" width="24" height="24" class="mr-2" />
+      Adicionar
     </button>
     <div class="mb-4">
       <input
@@ -31,7 +32,7 @@
       </select>
     </div>
     <div class="overflow-x-auto">
-      <table class="min-w-full bg-white">
+      <table class="min-w-full bg-white" v-if="filteredAndSortedUsers.length">
         <thead>
           <tr>
             <th
@@ -150,7 +151,7 @@
               />
             </td>
             <td class="border px-4 py-2">{{ user.address }}</td>
-            <td class="border px-4 py-2 flex space-x-2">
+            <td class="border px-4 py-2 text-center flex justify-center items-center space-x-2">
               <button @click="openForm(user)" class="text-blue-500 hover:text-blue-700">
                 <Icon icon="mdi:pencil" width="24" height="24" />
               </button>
@@ -181,7 +182,7 @@ import { Icon } from '@iconify/vue';
 import UserForm from '@/components/User/UserForm.vue';
 import ConfirmModal from '@/components/Modal/ConfirmModal.vue';
 import { toast } from 'vue3-toastify';
-
+import ProfileTab from '@/components/User/ProfileTab.vue';
 const userStore = useUserStore();
 const users = ref(userStore.users);
 const showForm = ref(false);
