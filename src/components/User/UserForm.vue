@@ -127,7 +127,7 @@
         <div class="flex justify-end">
           <button
             type="button"
-            @click="$emit('close')"
+            @click="handleCancel()"
             class="bg-gray-500 text-white px-4 py-2 rounded mr-2"
           >
             Cancelar
@@ -150,7 +150,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, defineProps, defineEmits } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useUserStore, type User } from '@/stores/UserStore';
 import { Icon } from '@iconify/vue';
 import { toast } from 'vue3-toastify';
@@ -234,6 +234,11 @@ async function fetchAddress() {
     cepError.value = 'Erro ao buscar o endereço.';
     user.value.address = '';
   }
+}
+
+function handleCancel() {
+  toast('Criação de usuário cancelada.', { type: 'info' });
+  emit('close');
 }
 
 async function saveUser() {
