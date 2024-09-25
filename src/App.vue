@@ -6,7 +6,7 @@ import SideBarComponent from '@/components/SideBar/SideBarComponent.vue';
 <template>
   <div class="relative flex flex-col h-screen">
     <SideBarComponent>
-      <div class="flex-1 overflow-y-auto pt-16">
+      <div class="flex-1 overflow-y-auto">
         <RouterView />
       </div>
     </SideBarComponent>

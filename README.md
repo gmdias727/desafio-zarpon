@@ -35,6 +35,18 @@
 
 ---
 
+⁠Existe forma melhor de tipar o “defineProps”: - defineProps<{InterfaceCorrespondenteAoTipo}>()
+
+⁠Uma biblioteca de validação de formulário poderia ter sido usada para facilitar exibição de erros e validação geral de formulário sem depender de lógica de ifs para cada campo. (Ex: Vee-validate com yup).
+
+⁠O store do pinia poderia ter sido feito usando Composition API também, pois é mais direto ao ponto, mais fácil de entender e simples de implementar, ficando semelhante também ao padrão usado nos próprios templates.
+
+⁠Estilização da tela, campos de formulário e da tabela ficaram bem genéricos, remetendo até mesmo a html sem tanta estilização.
+
+Os botões da listagem não ficam alinhados ao texto quando tem mais de uma linha, as bordas ficam esquisitas e a "caixa” formada não acompanha a linha da tabela.
+
+---
+
 ### Tooling:
 
 - Vue 3

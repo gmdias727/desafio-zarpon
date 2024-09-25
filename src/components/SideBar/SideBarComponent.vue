@@ -4,9 +4,18 @@
       :class="['relative transition-all duration-300', isCollapsed ? 'w-16' : 'w-64']"
       class="bg-gray-800 text-white h-screen"
     >
-      <button @click="toggleCollapse" class="absolute top-2 right-2 p-2">
+      <button
+        v-if="isCollapsed"
+        @click="toggleCollapse"
+        class="absolute top-2 left-1/2 transform -translate-x-1/2 p-2"
+      >
         <Icon :icon="isCollapsed ? 'mdi:menu' : 'mdi:menu-open'" width="24" height="24" />
       </button>
+
+      <button v-else @click="toggleCollapse" class="absolute top-2 right-2 p-2">
+        <Icon :icon="isCollapsed ? 'mdi:menu' : 'mdi:menu-open'" width="24" height="24" />
+      </button>
+
       <nav v-if="!isCollapsed" class="mt-10">
         <RouterLink to="/" class="block py-2 px-4 hover:bg-gray-700">Home</RouterLink>
         <RouterLink to="/about" class="block py-2 px-4 hover:bg-gray-700">Sobre</RouterLink>

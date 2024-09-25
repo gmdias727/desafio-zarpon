@@ -60,7 +60,7 @@ const mockUsers: User[] = [
   {
     id: 5,
     name: 'Pedro Lima',
-    email: 'pedro.lima@example.com',
+    email: 'pedro.lima@gmail.com',
     phone: '51978912345',
     cpfCnpj: '789.123.456-00',
     monthlyIncome: 4000,
