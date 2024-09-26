@@ -180,13 +180,15 @@
                 />
               </td>
               <td class="border px-4 py-2">{{ user.address }}</td>
-              <td class="border px-4 py-2 text-center flex justify-center items-center space-x-2">
-                <button @click="openForm(user)" class="text-blue-500 hover:text-blue-700">
-                  <Icon icon="mdi:pencil" width="24" height="24" />
-                </button>
-                <button @click="confirmDelete(user.id)" class="text-red-500 hover:text-red-700">
-                  <Icon icon="mdi:trash-can" width="24" height="24" />
-                </button>
+              <td class="border px-4 py-2 text-center">
+                <div class="flex justify-center items-center flex-wrap">
+                  <button @click="openForm(user)" class="text-blue-500 hover:text-blue-700">
+                    <Icon icon="mdi:pencil" width="24" height="24" />
+                  </button>
+                  <button @click="confirmDelete(user.id)" class="text-red-500 hover:text-red-700">
+                    <Icon icon="mdi:trash-can" width="24" height="24" />
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -199,7 +201,7 @@
           Nenhum usuário encontrado.
         </p>
       </div>
-      <UserForm v-if="showForm" :userToEdit="userToEdit ?? undefined" @close="closeForm" />
+      <UserForm v-if="showForm" :userToEdit="userToEdit ?? null" @close="closeForm" />
       <ConfirmModal v-if="showConfirmModal" @confirm="deleteUser" @cancel="closeConfirmModal" />
     </div>
   </div>
