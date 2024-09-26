@@ -127,7 +127,7 @@
         <div class="flex justify-end">
           <button
             type="button"
-            @click="handleCancel()"
+            @click="isEditMode ? handleEditCancel() : handleCancel()"
             class="bg-gray-500 text-white px-4 py-2 rounded mr-2"
           >
             Cancelar
@@ -156,12 +156,11 @@ import { Icon } from '@iconify/vue';
 import { toast } from 'vue3-toastify';
 import axios from 'axios';
 
-const props = defineProps({
-  userToEdit: {
-    type: Object,
-    default: null,
-  },
-});
+interface UserFormProps {
+  userToEdit: User | null;
+}
+
+const props = defineProps<UserFormProps>();
 
 const userStore = useUserStore();
 const isEditMode = ref(false);
@@ -241,6 +240,11 @@ function handleCancel() {
   emit('close');
 }
 
+function handleEditCancel() {
+  toast('Edição de usuário cancelada.', { type: 'info' });
+  emit('close');
+}
+
 async function saveUser() {
   if (
     !user.value.name ||
@@ -261,9 +265,9 @@ async function saveUser() {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     if (isEditMode.value) {
-      await userStore.updateUser(user.value);
+      userStore.updateUser(user.value);
     } else {
-      await userStore.addUser(user.value);
+      userStore.addUser(user.value);
       successMessage.value = 'Usuário criado com sucesso!';
       emit('success', 'Usuário criado com sucesso!');
     }
